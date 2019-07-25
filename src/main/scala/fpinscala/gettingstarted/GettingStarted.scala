@@ -35,8 +35,14 @@ object MyModule {
   }
 
   // Exercise 1: Write a function to compute the nth fibonacci number
+  def fib(n: Int): Int = {
+    @scala.annotation.tailrec
+    def go(k: Int, acc: Int, prev_acc: Int): Int =
+      if (k <= 0) prev_acc
+      else go(k-1, acc+prev_acc, acc)
 
-  def fib(n: Int): Int = ???
+    go(n, 1, 0)
+  }
 
   // This definition and `formatAbs` are very similar..
   private def formatFactorial(n: Int) = {
