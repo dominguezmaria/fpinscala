@@ -1,5 +1,6 @@
 package fpinscala.datastructures
 
+import fpinscala.datastructures.List.foldRight
 import org.scalatest.FlatSpec
 
 class ListTest extends FlatSpec {
@@ -69,5 +70,49 @@ class ListTest extends FlatSpec {
     assert(List.sum3(List(1,2,3)) == 6)
     assert(List.product3(List(1,2,3)) == 6)
     assert(List.length3(List(1,2,3)) == 3)
+  }
+
+  "reverse" should "return a new list with the elements in reversed order" in {
+    assert(List.reverse(List(1,2,3)) == List(3,2,1))
+  }
+
+  "append" should "add a new element at the end of the list" in {
+    assert(List.append(List(1,2,3), 4) == List(1,2,3,4))
+  }
+
+  "concatenateListsOfLists" should "concatenate a List of Lists" in {
+    assert(List.concatenateListsOfLists(List(List(1,2,3), List(4, 5), List(6))) == List(1,2,3,4,5,6))
+  }
+
+  "incrementList" should "add 1 to each element in a integers List" in {
+    assert(List.incrementList(List(1,2,3)) == List(2,3,4))
+  }
+
+  "applyToString" should "transform Doubles in Strings in a List" in {
+    assert(List.applyToString(List(1.0,2.0,3.0)) == List("1.0", "2.0", "3.0"))
+  }
+
+  "map" should "transform each element of a List with some function" in {
+    assert(List.map(List(1,2,3))(_ * 2) == List(2,4,6))
+  }
+
+  "filter" should "be able to be used to remove odd numbers from a List" in {
+    assert(List.filter(List(1,2,3,4))(_ % 2 == 0) == List(2,4))
+  }
+
+  "flatMap" should "apply a function to the elements of a List and return a flat List" in {
+    assert(List.flatMap(List(1,2,3))(i => List(i,i)) == List(1,1,2,2,3,3))
+  }
+
+  "filter" should "work when implemented with flatMap" in {
+    assert(List.filterWithFlatMap(List(1,2,3,4))(_ % 2 == 0) == List(2,4))
+  }
+
+  "sumLists" should "sum two Lists of integers" in {
+    assert(List.sumLists(List(1,2,3), List(4,5,6)) == List(5,7,9))
+  }
+
+  "zipWith" should "work to sum lists" in {
+    assert(List.zipWith(List(1,2,3), List(4,5,6))(_+_) == List(5,7,9))
   }
 }

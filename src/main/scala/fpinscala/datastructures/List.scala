@@ -46,12 +46,14 @@ object List { // `List` companion object. Contains functions for creating and wo
   }
 
   // Exercise 3.4
+  @scala.annotation.tailrec
   def drop[A](l: List[A], n: Int): List[A] = l match {
     case Cons(_, xs) if n > 0 => drop(xs, n - 1)
     case _ => l
   }
 
   // Exercise 3.5
+  @scala.annotation.tailrec
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
     case Cons(x, xs) if f(x) => dropWhile(xs, f)
     case _ => l
@@ -59,6 +61,7 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   // this is a version of dropWhile where we don't have to specify the types in function f
   // see the main for an example on how to call it
+  @scala.annotation.tailrec
   def dropWhile2[A](as: List[A])(f: A => Boolean): List[A] = as match {
     case Cons(h,t) if f(h) => dropWhile2(t)(f)
     case _ => as
@@ -92,7 +95,7 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   // Exercise 3.8
   def exercise_3_8(ns: List[Int]): List[Int] =
-    List.foldRight(ns, Nil:List[Int])(Cons(_,_))
+    foldRight(ns, Nil:List[Int])(Cons(_,_))
 
   // Exercise 3.9
   def length[A](l: List[A]): Int = {
@@ -121,5 +124,78 @@ object List { // `List` companion object. Contains functions for creating and wo
   def reverse[A](l: List[A]): List[A] =
     foldLeft(l, Nil: List[A])((b, a) => Cons(a, b))
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+  // Exercise 3.13
+  //def foldLeftWithFoldRight[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    // case Nil => z
+    // case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+  //}
+
+  // Exercise 3.14
+  def append[A](l: List[A], x: A): List[A] =
+    foldRight(l, List(x))((a, b) => Cons(a, b))
+
+  // Exercise 3.15
+  @scala.annotation.tailrec
+  def concatenateLists[B](l1: List[B], l2: List[B]): List[B] = l2 match {
+    case Nil => l1
+    case Cons(x, xs) => concatenateLists(append(l1, x), xs)
+  }
+
+  def concatenateListsOfLists[A](ll: List[List[A]]): List[A] = {
+    //foldRight(ll, Nil:List[A])(concatenateLists)
+    foldLeft(ll, Nil:List[A])(concatenateLists)
+  }
+
+  // Exercise 3.16
+  def incrementList(l: List[Int]): List[Int] = {
+    foldRight(l, Nil: List[Int])((a, b) => Cons(a+1, b))
+  }
+
+  // Exercise 3.17
+  def applyToString(l: List[Double]): List[String] = {
+    foldRight(l, Nil: List[String])((a, b) => Cons(a.toString, b))
+  }
+
+  // Exercise 3.18
+  def map[A,B](l: List[A])(f: A => B): List[B] = {
+    foldRight(l, Nil: List[B])((a, b) => Cons(f(a), b))
+  }
+
+  // Exercise 3.19
+  def filter[A](as: List[A])(f: A => Boolean): List[A] = {
+    foldRight(as, Nil: List[A])((a, b) => if (f(a)) Cons(a, b) else b)
+  }
+
+  // Exercise 3.20
+  def flatMap[A,B](as: List[A])(f: A => List[B]): List[B] = {
+    foldRight(as, Nil: List[B])((a, b) => concatenateLists(f(a), b))
+  }
+
+  // Exercise 3.21
+  def filterWithFlatMap[A](as: List[A])(f: A => Boolean): List[A] = {
+    flatMap(as)(i => if (f(i)) List(i) else List())
+  }
+
+  // Exercise 3.22
+  def sumLists(l1: List[Int], l2: List[Int]): List[Int] = l1 match {
+    case Nil => Nil
+    case Cons(x, xs) => l2 match {
+      case Nil => Nil
+      case Cons(y, ys) => Cons(x + y, sumLists(xs, ys))
+    }
+  }
+
+  // Exercise 3.23
+  def zipWith[A](l1: List[A], l2: List[A])(f: (A, A) => A): List[A] = l1 match {
+    case Nil => Nil
+    case Cons(x, xs) => l2 match {
+      case Nil => Nil
+      case Cons(y, ys) => Cons(f(x, y), zipWith(xs, ys)(f))
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(3.0.toString)
+  }
+
 }
