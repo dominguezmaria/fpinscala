@@ -194,6 +194,9 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
   }
 
+  // Exercise 3.24
+  // Missing
+
   def main(args: Array[String]): Unit = {
     println(3.0.toString)
   }
