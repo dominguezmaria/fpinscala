@@ -9,26 +9,26 @@ object Tree {
 
   // Exercise 3.25
   def size[A](root: Tree[A]): Int = root match {
-    case _: Leaf[A] => 1
-    case b: Branch[A] => 1 + size(b.left) + size(b.right)
+    case Leaf(_) => 1
+    case Branch(l, r) => 1 + size(l) + size(r)
   }
 
   // Exercise 3.26
   def maximum(root: Tree[Int]): Int = root match {
-    case v: Leaf[Int] => v.value
-    case b: Branch[Int] => maximum(b.left) max maximum(b.right)
+    case Leaf(v) => v
+    case Branch(l, r) => maximum(l) max maximum(r)
    }
 
   // Exercise 3.27
   def depth[A](root: Tree[A]): Int = root match {
-    case _: Leaf[A] => 1
-    case b: Branch[A] => 1 + (depth(b.left) max depth(b.right))
+    case Leaf(_) => 1
+    case Branch(l, r) => 1 + (depth(l) max depth(r))
   }
 
   // Exercise 3.28
   def map[A](root: Tree[A])(f: A => A): Tree[A] = root match {
-    case v: Leaf[A] => Leaf(f(v.value))
-    case b: Branch[A] => Branch(map(b.left)(f), map(b.right)(f))
+    case Leaf(v) => Leaf(f(v))
+    case Branch(l, r) => Branch(map(l)(f), map(r)(f))
   }
 
   // Exercise 3.29

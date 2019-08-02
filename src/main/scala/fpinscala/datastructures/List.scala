@@ -79,8 +79,6 @@ object List { // `List` companion object. Contains functions for creating and wo
   // Exercise 3.7
   // Product with fold right will only stop when the end of the list is reached.
   // Function foldRight could have an additional parameter 'halt' to stop and return that value.
-
-
   def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
     as match {
       case Nil => z
@@ -135,14 +133,11 @@ object List { // `List` companion object. Contains functions for creating and wo
     foldRight(l, List(x))((a, b) => Cons(a, b))
 
   // Exercise 3.15
-  @scala.annotation.tailrec
-  def concatenateLists[B](l1: List[B], l2: List[B]): List[B] = l2 match {
-    case Nil => l1
-    case Cons(x, xs) => concatenateLists(append(l1, x), xs)
+  def concatenateLists[B](l1: List[B], l2: List[B]): List[B] = {
+    foldRight(l1, l2)((a, b) => Cons(a, b))
   }
 
   def concatenateListsOfLists[A](ll: List[List[A]]): List[A] = {
-    //foldRight(ll, Nil:List[A])(concatenateLists)
     foldLeft(ll, Nil:List[A])(concatenateLists)
   }
 
